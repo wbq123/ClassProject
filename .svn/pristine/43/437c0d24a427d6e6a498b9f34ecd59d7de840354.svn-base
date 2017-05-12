@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">ClassProject</string>
+    <string name="login">登录</string>
+    <string name="jump_data">通过跳转-回调获取值</string>
+    <string name="show_data">显示回调的值</string>
+    <string name="edit_hint">请输入值</string>
+    <string name="confirm_input">确认输入</string>
+    <string name="view_pager">ViewPager-引导页</string>
+    <string name="jump_next">跳过</string>
+    <string name="draw_text">抽屉-侧滑菜单</string>
+    <string name="header_name">张飞</string>
+    <string name="header_desc">杨柳岸，晓风残月。此去经年，应是良辰好景虚设。便纵有千种风情，待与何人说</string>
+    <string name="progress">进度条</string>
+</resources>

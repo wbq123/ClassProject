@@ -1,0 +1,49 @@
+package com.elife.classproject.netframe;
+
+import android.util.Log;
+
+import com.elife.classproject.network.GoodModel;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+/**
+ * Created by tzhang on 2016/9/13.
+ */
+public class RetrofitManager {
+
+    public static void getGoods() {
+
+        RetrofitService retrofitService = RetrofitClient.getClient();
+// 创建有一个回调对象
+        Call<List<GoodModel>> call = retrofitService.getGoods("good");
+        // 用回调对象发起请求
+        call.enqueue(new Callback<List<GoodModel>>() {
+
+            // 回调方法
+            @Override
+            public void onResponse(Call<List<GoodModel>> call, Response<List<GoodModel>> response) {
+                if (response.isSuccessful()) {
+                    // request successful (status code 200, 201)
+                    List<GoodModel> result = response.body();
+                    Log.e("RetrofitManager", result.size() + "-----------");
+
+
+                } else {
+
+                }
+            }
+
+            // 返回http状态码非成功的回调方法
+            @Override
+            public void onFailure(Call<List<GoodModel>> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+}

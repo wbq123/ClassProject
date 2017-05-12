@@ -1,0 +1,148 @@
+package com.elife.classproject;
+
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+
+import com.elife.classproject.broadcast.BcReceiver;
+import com.elife.classproject.broadcast.BroadActivity;
+import com.elife.classproject.composite.HomeActivity;
+import com.elife.classproject.dialog.AlertDialgActivity;
+import com.elife.classproject.drawer.DrawerActivity;
+import com.elife.classproject.fragment.FragActivity;
+import com.elife.classproject.list.RLListViewActivity;
+import com.elife.classproject.network.NetworkActivity;
+import com.elife.classproject.notification.NotificationActivity;
+import com.elife.classproject.popup.PopupActivity;
+import com.elife.classproject.vp.VpActivity;
+
+public class AllClassActivity extends AppCompatActivity implements View.OnClickListener {
+
+
+    Button mBtnVp;
+    Button mBtnDrawer;
+    Button mProgress;
+    Button mDialog;
+    Button mNaviMenu;
+    BcReceiver broadCastReceiver;
+    private Button mNotification;
+    private Button mPopup;
+    private Button mFrag;
+    private Button mHome;
+    private Button mList;
+    private Button mShared;
+    private Button mSqlite;
+    private Button mBroadcast;
+    private Button mJson;
+    private Button mNetWork;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_all_class);
+
+        mBtnVp = (Button) findViewById(R.id.view_pager);
+        mBtnDrawer = (Button) findViewById(R.id.drawer_layout);
+        mProgress = (Button) findViewById(R.id.progress);
+        mDialog = (Button) findViewById(R.id.dialog);
+        mNotification = (Button) findViewById(R.id.noti);
+        mNaviMenu = (Button) findViewById(R.id.navi_menu);
+        mPopup = (Button) findViewById(R.id.popup);
+        mFrag = (Button) findViewById(R.id.fragment);
+        mHome = (Button) findViewById(R.id.home);
+        mList = (Button) findViewById(R.id.listview);
+        mShared = (Button) findViewById(R.id.sharedpre);
+        mSqlite = (Button) findViewById(R.id.sqlite);
+        mBroadcast = (Button) findViewById(R.id.broadcast);
+        mJson = (Button) findViewById(R.id.json);
+        mNetWork = (Button) findViewById(R.id.network);
+
+        mBtnVp.setOnClickListener(this);
+        mList.setOnClickListener(this);
+        mBtnDrawer.setOnClickListener(this);
+        mProgress.setOnClickListener(this);
+        mDialog.setOnClickListener(this);
+        mNotification.setOnClickListener(this);
+        mNaviMenu.setOnClickListener(this);
+        mPopup.setOnClickListener(this);
+        mFrag.setOnClickListener(this);
+        mHome.setOnClickListener(this);
+        mShared.setOnClickListener(this);
+        mSqlite.setOnClickListener(this);
+        mBroadcast.setOnClickListener(this);
+        mJson.setOnClickListener(this);
+        mNetWork.setOnClickListener(this);
+
+
+        //生成广播处理
+        broadCastReceiver = new BcReceiver();
+        //实例化过滤器并设置要过滤的广播
+        IntentFilter intentFilter = new IntentFilter("android.intent.action.TIME_TICK");
+        //注册广播
+        registerReceiver(broadCastReceiver, intentFilter);
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent intent = new Intent();
+
+        switch (view.getId()) {
+            case R.id.view_pager:
+                intent.setClass(getApplicationContext(), VpActivity.class);
+                break;
+            case R.id.drawer_layout:
+                intent.setClass(getApplicationContext(), DrawerActivity.class);
+                break;
+            case R.id.progress:
+                intent.setClass(getApplicationContext(), ProgressActivity.class);
+                break;
+            case R.id.dialog:
+                intent.setClass(getApplicationContext(), AlertDialgActivity.class);
+                break;
+            case R.id.noti:
+                intent.setClass(getApplicationContext(), NotificationActivity.class);
+                break;
+            case R.id.navi_menu:
+                intent.setClass(getApplicationContext(), MenuActivity.class);
+                break;
+            case R.id.popup:
+                intent.setClass(getApplicationContext(), PopupActivity.class);
+                break;
+            case R.id.fragment:
+                intent.setClass(getApplicationContext(), FragActivity.class);
+                break;
+            case R.id.home:
+                intent.setClass(getApplicationContext(), HomeActivity.class);
+                break;
+            case R.id.listview:
+                intent.setClass(getApplicationContext(), RLListViewActivity.class);
+                break;
+            case R.id.sharedpre:
+                intent.setClass(getApplicationContext(), LoginActivity.class);
+                break;
+            case R.id.sqlite:
+                intent.setClass(getApplicationContext(), SqliteActivity.class);
+                break;
+            case R.id.broadcast:
+                intent.setClass(getApplicationContext(), BroadActivity.class);
+                break;
+            case R.id.json:
+                intent.setClass(getApplicationContext(), JsonActivity.class);
+                break;
+            case R.id.network:
+                intent.setClass(getApplicationContext(), NetworkActivity.class);
+                break;
+        }
+
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(broadCastReceiver);
+        super.onDestroy();
+    }
+}

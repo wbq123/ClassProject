@@ -1,0 +1,33 @@
+package com.elife.classproject.project.base;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+/**
+ * Created by tzhang on 2016/9/22.
+ */
+public abstract class BaseFragment extends Fragment {
+
+    public View mRootView;
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initData();
+    }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        mRootView = initView(inflater);
+        return mRootView;
+    }
+
+    public abstract View initView(LayoutInflater inflater);
+
+    public abstract void initData();
+
+}

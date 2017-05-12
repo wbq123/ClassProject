@@ -1,0 +1,14 @@
+package com.elife.classproject.constant;
+
+/**
+ * Created by tzhang on 2016/9/8.
+ */
+public class ConstantData {
+
+    public static final String SHARED_FILE_NAME = "shared";
+    public static final String SHARED_FILE_NAME1 = "shared_file";
+
+
+    public static final String BORAD_SELF_ACTION = "com.elife.my.BROAD";
+
+}

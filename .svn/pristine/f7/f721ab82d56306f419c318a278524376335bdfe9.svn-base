@@ -1,0 +1,93 @@
+package com.elife.classproject.network;
+
+import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.TextView;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+
+/**
+ * Created by tzhang on 2016/9/11.
+ */
+public class DownloadAsyncTask extends AsyncTask<String, Integer, String> {
+    TextView tv;
+   public DownloadAsyncTask(TextView tv) {
+        this.tv = tv;
+    }
+    @Override
+    protected void onPostExecute(String s) {
+        Log.e("---------", "onPostExecute" + s);
+        tv.setText(s);
+    }
+//1
+    @Override
+    protected void onPreExecute() {
+        Log.e("---------", "onPreExecute");
+        tv.setText("0%");
+    }
+
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+       Log.e("---------", "onProgressUpdate" + values[0] + "");
+        tv.setText(values[0] + "%");
+    }
+//2
+    @Override
+    protected String doInBackground(String... strings) {
+        URL url = null;
+        try {
+            url = new URL("http://192.168.2.101:8088/elife/test.apk");
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.setRequestMethod("POST");
+
+            httpURLConnection.setConnectTimeout(8000);
+            httpURLConnection.setReadTimeout(8000);
+
+            httpURLConnection.setDoOutput(true);
+            if (httpURLConnection.getResponseCode() == 200) {
+                InputStream is = httpURLConnection.getInputStream();
+
+                File file = new File("/storage/sdcard/tt.apk");
+
+                BufferedInputStream br = new BufferedInputStream(is);
+                BufferedOutputStream bw = new BufferedOutputStream(new FileOutputStream(file, true));
+                byte[] b = new byte[200];
+                int end = -1;
+                int size = 0;
+
+                long length = httpURLConnection.getContentLength();
+                while ((end = br.read(b)) != -1) {
+                    size = size + end;
+                   publishProgress((int)(size * 100 /length));
+                    bw.write(b, 0, end);
+                }
+
+                bw.close();
+                br.close();
+            }
+            httpURLConnection.disconnect();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "success";
+    }
+
+
+}

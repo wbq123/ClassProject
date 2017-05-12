@@ -1,0 +1,188 @@
+package com.elife.classproject.anim;
+
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.graphics.drawable.AnimationDrawable;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
+import android.widget.Button;
+import android.widget.ImageView;
+
+import com.elife.classproject.R;
+
+public class AnimActivity extends AppCompatActivity implements View.OnClickListener {
+
+    ImageView mFrameAnimImage;
+
+    AnimationDrawable animationDrawable;
+    Button mStartFrameButton;
+    Button mStopFrameButton;
+
+
+    Button mTranslateBtn;
+    Button mScaleBtn;
+    Button mRotateBtn;
+    Button mAlphaBtn;
+    Button mSetBtn;
+
+    Button mValueObjectAnim;
+
+    ImageView mImageTween;
+    ImageView mImageObject;
+    private Button mObjectObjectAnim;
+    private Button mSetObjectAnim;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_anim);
+
+        mStartFrameButton = (Button) findViewById(R.id.start_anim);
+        mStopFrameButton = (Button) findViewById(R.id.stop_anim);
+
+        mTranslateBtn = (Button) findViewById(R.id.translate_anim);
+        mScaleBtn = (Button) findViewById(R.id.scale_anim);
+        mRotateBtn = (Button) findViewById(R.id.rotate_anim);
+        mAlphaBtn = (Button) findViewById(R.id.alpha_anim);
+        mSetBtn = (Button) findViewById(R.id.set_anim);
+
+        mValueObjectAnim = (Button) findViewById(R.id.value_object_anim);
+        mObjectObjectAnim = (Button) findViewById(R.id.object_object_anim);
+        mSetObjectAnim = (Button) findViewById(R.id.set_object_anim);
+
+
+        mImageTween = (ImageView) findViewById(R.id.tween_anim);
+        mImageObject = (ImageView) findViewById(R.id.object_anim);
+
+
+        mStartFrameButton.setOnClickListener(this);
+        mStopFrameButton.setOnClickListener(this);
+
+        mTranslateBtn.setOnClickListener(this);
+        mScaleBtn.setOnClickListener(this);
+        mRotateBtn.setOnClickListener(this);
+        mAlphaBtn.setOnClickListener(this);
+        mSetBtn.setOnClickListener(this);
+        mValueObjectAnim.setOnClickListener(this);
+        mObjectObjectAnim.setOnClickListener(this);
+        mSetObjectAnim.setOnClickListener(this);
+
+        // 帧动画图片
+        mFrameAnimImage = (ImageView) findViewById(R.id.anim_draw);
+//         mFrameAnimImage.setImageResource(R.drawable.anim_paly);
+        animationDrawable = (AnimationDrawable) mFrameAnimImage.getDrawable();
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()) {
+            case R.id.start_anim:
+                // 帧动画启动
+                animationDrawable.start();
+                break;
+            case R.id.stop_anim:
+                // 帧动画停止
+                animationDrawable.stop();
+                break;
+            case R.id.translate_anim:
+                TranslateAnimation translateAnimation = (TranslateAnimation) AnimationUtils.loadAnimation(AnimActivity.this, R.anim.anim_translate);
+                mImageTween.startAnimation(translateAnimation);
+
+//                TranslateAnimation tt = new TranslateAnimation(0f,300f, 0f,400f);
+//                tt.setDuration(2000);
+//                mImageTween.startAnimation(tt);
+                break;
+            case R.id.scale_anim:
+                ScaleAnimation scaleAnimation = (ScaleAnimation) AnimationUtils.loadAnimation(AnimActivity.this, R.anim.anim_scale);
+                mImageTween.startAnimation(scaleAnimation);
+                break;
+            case R.id.rotate_anim:
+                RotateAnimation rotateAnimation = (RotateAnimation) AnimationUtils.loadAnimation(AnimActivity.this, R.anim.anim_rotate);
+                mImageTween.startAnimation(rotateAnimation);
+                break;
+            case R.id.alpha_anim:
+                AlphaAnimation alphaAnimation = (AlphaAnimation) AnimationUtils.loadAnimation(AnimActivity.this, R.anim.anim_alpha);
+                mImageTween.startAnimation(alphaAnimation);
+                break;
+            case R.id.set_anim:
+
+               AnimationSet animation = (AnimationSet) AnimationUtils.loadAnimation(AnimActivity.this, R.anim.anim_set);
+                animation.setFillAfter(true);
+                mImageTween.startAnimation(animation);
+
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+//                        AnimationSet animationSet = (AnimationSet) AnimationUtils.loadAnimation(AnimActivity.this, R.anim.anim_set_recover);
+//                        mImageTween.startAnimation(animationSet);// 再次调用从最开始的图开始变化
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+
+                break;
+            case R.id.value_object_anim:
+                ValueAnimator valueAnimator = (ValueAnimator) AnimatorInflater.loadAnimator(this, R.animator.value_animator);
+                valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                        // 当前动画值，即为当前宽度比例值
+                        int currentValue = (Integer) valueAnimator.getAnimatedValue();
+                        Log.e("--------", currentValue + "");
+                        // 根据比例更改目标view的宽度
+                        mImageObject.getLayoutParams().width = currentValue;
+//                        mImageObject.setLayoutParams(mImageObject.getLayoutParams());
+                        mImageObject.requestLayout();
+                    }
+                });
+                valueAnimator.start();
+                break;
+            case R.id.object_object_anim:
+                // 获取屏幕宽度
+                int maxWidth = getWindowManager().getDefaultDisplay().getWidth();
+                // 将目标view进行包装
+                ViewWrapper wrapper = new ViewWrapper(mImageObject, maxWidth);
+                // 将xml转化为ObjectAnimator对象
+                ObjectAnimator objectAnimator = (ObjectAnimator) AnimatorInflater.loadAnimator(this, R.animator.object_animator);
+                // 设置动画的目标对象为包装后的view
+                objectAnimator.setTarget(wrapper);
+                // 启动动画
+                objectAnimator.start();
+                break;
+            case R.id.set_object_anim:
+                // 获取屏幕宽度
+                int maxWidth1 = getWindowManager().getDefaultDisplay().getWidth();
+                // 将目标view进行包装
+                ViewWrapper wrapper1 = new ViewWrapper(mImageObject, maxWidth1);
+                // 将xml转化为ObjectAnimator对象
+                AnimatorSet animatorSet = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.set_animator);
+                // 设置动画的目标对象为包装后的view
+                animatorSet.setTarget(wrapper1);
+                // 启动动画
+                animatorSet.start();
+                break;
+
+        }
+    }
+}

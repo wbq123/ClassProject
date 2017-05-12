@@ -1,0 +1,114 @@
+package com.elife.classproject.project;
+
+import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.elife.classproject.R;
+import com.elife.classproject.adapter.InfoModel;
+import com.elife.classproject.adapter.MyAdapter;
+
+import java.util.ArrayList;
+
+/**
+ * toolbar标题栏居中
+ * Toolbar的父类是ViewGroup，我们只需把Toolbar默认的title设置为空，并在Toolbar里加上一个TextView就可以实现
+ */
+public class ProjectActivity extends AppCompatActivity {
+
+    private Toolbar mToolbar;
+
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private MainFragment mMainFragment;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_project);
+        initView();
+        initDrawData();
+    }
+
+    private void initView() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setTitle("");
+        setSupportActionBar(mToolbar);
+
+        // 给左上角图标的左边加上一个返回的图标
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open,
+                R.string.drawer_close){
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                Log.e("ProjectActivity", "onDrawerClosed");
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                Log.e("ProjectActivity", "onDrawerOpened");
+            }
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, slideOffset);
+                Log.e("ProjectActivity", "onDrawerSlide");
+            }
+        };
+        mDrawerToggle.syncState();
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+
+
+        MainFragment mMainFragment = new MainFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content, mMainFragment, "MAIN")
+                .commit();
+    }
+
+
+    private void initDrawData() {
+        final ArrayList<InfoModel> mInfoList = initData();
+        MyAdapter mMyAdapter = new MyAdapter(mInfoList, this);
+        ListView mListView = (ListView) findViewById(R.id.left_drawer);
+        mListView.setAdapter(mMyAdapter);
+
+        View view = View.inflate(this, R.layout.header_drawer,null);
+
+        mListView.addHeaderView(view);
+
+        ImageView image = new ImageView(this);
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                if (i != 0) {
+                    Toast.makeText(getApplicationContext(), "" + mInfoList.get(i - 1).getName(), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+    }
+
+    public ArrayList<InfoModel> initData() {
+
+        ArrayList<InfoModel> mInfoList = new ArrayList<InfoModel>();
+
+        for (int i = 0; i < 4; i++) {
+            InfoModel infoModel = new InfoModel("DESCRIBE", R.drawable.btmlay_icn_praise, "NAME----" + i, R.drawable.recommend_icn_birthday_prs, "10:30");
+            mInfoList.add(infoModel);
+        }
+        return mInfoList;
+    }
+}

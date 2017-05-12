@@ -1,0 +1,29 @@
+package com.elife.classproject.project;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.LinearLayout;
+
+import com.elife.classproject.R;
+import com.elife.classproject.project.base.BaseFragment;
+
+/**
+ * Created by tzhang on 2016/9/22.
+ */
+public class MainFragment extends BaseFragment{
+
+    @Override
+    public View initView(LayoutInflater inflater) {
+
+        mRootView = inflater.inflate(R.layout.fragment_main, null);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        mRootView.setLayoutParams(params);
+
+        return mRootView;
+    }
+
+    @Override
+    public void initData() {
+
+    }
+}

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.elife.classproject">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <application
+        android:name=".application.MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.elife.classproject.Main" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/login"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".SaveInstanceStateActivity"
+            android:configChanges="orientation|screenSize">
+
+            <!--  -->
+
+        </activity>
+        <activity android:name=".FirstActivity" />
+        <activity android:name=".SecondActivity" />
+        <activity
+            android:name=".launchmode.Stanardctivity"
+            android:launchMode="singleTop" />
+        <activity android:name=".launchmode.SingleActivity" />
+        <activity android:name=".list.ListDemoActivity" />
+        <activity android:name=".drawer.DrawerActivity"></activity>
+        <activity
+            android:name=".AllClassActivity"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".vp.VpActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity android:name=".ProgressActivity"></activity>
+    </application>
+
+</manifest>

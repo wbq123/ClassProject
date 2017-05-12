@@ -1,0 +1,23 @@
+package com.elife.classproject.base;
+
+import android.content.Context;
+import android.support.v4.view.ViewPager;
+import android.util.AttributeSet;
+
+/**
+ * Created by tzhang on 2016/9/6.
+ */
+public class Mvp extends ViewPager {
+    public Mvp(Context context) {
+        super(context);
+    }
+
+    public Mvp(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    @Override
+    public void setOffscreenPageLimit(int limit) {
+        super.setOffscreenPageLimit(limit);
+    }
+}
